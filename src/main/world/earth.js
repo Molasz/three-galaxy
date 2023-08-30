@@ -29,7 +29,7 @@ export default class Earth {
           this.setGeometry();
           this.setMesh();
         });
-      earth.add(debug, "position", 0, 10, 0.1).name("Position");
+      earth.add(debug, "position", 0, 50, 0.1).name("Position");
       earth.add(debug, "elapse", 0, 10, 0.1).name("Elapse");
       earth.add(debug, "rotation", 0, 10, 0.1).name("Rotation");
     }

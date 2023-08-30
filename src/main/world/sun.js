@@ -8,8 +8,9 @@ const debug = {
   darkColor: "#f9b806",
   lightColor: "#ed0000",
   rotation: 2,
-  speed: 3,
+  speed: 2,
   amplifier: 3,
+  size: 10,
 };
 
 export default class Sun {
@@ -22,16 +23,26 @@ export default class Sun {
 
     if (this.main.debug.active) {
       const sun = this.main.debug.ui.addFolder("Sun");
+
+      sun
+        .add(debug, "size", 5, 30, 0.1)
+        .name("Size")
+        .onFinishChange(() => {
+          this.destroy();
+          this.setGeometry();
+          this.setMesh();
+        });
+
       sun.add(debug, "rotation", 0, 10, 0.1).name("Rotation");
       sun.add(this.material.uniforms.uSpeed, "value", 0, 10, 0.1).name("Animation Speed");
-      sun.add(this.material.uniforms.uAmplifier, "value", 0, 10, 0.1).name("Amplifier");
+      sun.add(this.material.uniforms.uAmplifier, "value", 0, 20, 0.1).name("Amplifier");
       sun.addColor(this.material.uniforms.uDarkColor, "value").name("Dark Color");
       sun.addColor(this.material.uniforms.uLightColor, "value").name("Light Color");
     }
   }
 
   setGeometry() {
-    this.geometry = new THREE.SphereGeometry(5);
+    this.geometry = new THREE.SphereGeometry(debug.size);
   }
 
   setMaterial() {
@@ -57,6 +68,12 @@ export default class Sun {
   update() {
     this.material.uniforms.uTime.value = this.main.time.elapse;
 
-    this.mesh.rotation.y = this.main.time.elapse * (debug.rotation / 10000);
+    this.mesh.rotation.y = this.main.time.elapse * 0.0005 * debug.rotation;
+  }
+
+  destroy() {
+    this.main.scene.remove(this.mesh);
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
   }
 }
