@@ -8,6 +8,7 @@ const debug = {
   position: 10,
   elapse: 1,
   rotation: 1,
+  size: 1,
 };
 
 export default class Earth {
@@ -20,6 +21,14 @@ export default class Earth {
 
     if (this.main.debug.active) {
       const earth = this.main.debug.ui.addFolder("Earth");
+      earth
+        .add(debug, "size", 0, 5, 0.1)
+        .name("Size")
+        .onFinishChange(() => {
+          this.destroy();
+          this.setGeometry();
+          this.setMesh();
+        });
       earth.add(debug, "position", 0, 10, 0.1).name("Position");
       earth.add(debug, "elapse", 0, 10, 0.1).name("Elapse");
       earth.add(debug, "rotation", 0, 10, 0.1).name("Rotation");
@@ -27,7 +36,7 @@ export default class Earth {
   }
 
   setGeometry() {
-    this.geometry = new THREE.SphereGeometry(1);
+    this.geometry = new THREE.SphereGeometry(debug.size);
   }
 
   setMaterial() {
@@ -44,5 +53,11 @@ export default class Earth {
     this.mesh.position.set(Math.sin(rotationTime) * debug.position, 0, Math.cos(rotationTime) * debug.position);
 
     this.mesh.rotation.y = this.main.time.elapse * debug.rotation * 0.0005;
+  }
+
+  destroy() {
+    this.main.scene.remove(this.mesh);
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
   }
 }

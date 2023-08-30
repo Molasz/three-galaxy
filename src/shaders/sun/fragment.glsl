@@ -138,6 +138,9 @@ float cnoise(vec4 P){
   return 2.2 * n_xyzw;
 }
 
+uniform float uSpeed;
+uniform float uAmplifier;
+
 uniform float uTime;
 uniform vec3 uDarkColor;
 uniform vec3 uLightColor;
@@ -145,7 +148,7 @@ uniform vec3 uLightColor;
 varying vec3 vPosition;
 
 void main() {
-    float strength = sin(cnoise(vec4(vPosition, uTime * 0.001)) * 5.0);
+    float strength = sin(cnoise(vec4(vPosition, uTime * uSpeed / 1000.0)) * uAmplifier);
 
     vec3 color = mix(uLightColor, uDarkColor, strength);
 
