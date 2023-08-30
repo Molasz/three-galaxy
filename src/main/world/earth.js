@@ -5,10 +5,10 @@ import Main from "..";
 // import fragmentShader from "../../shaders/sun/fragment.glsl";
 
 const debug = {
-  position: 10,
+  position: 18,
   elapse: 1,
   rotation: 1,
-  size: 1,
+  size: 3,
 };
 
 export default class Earth {
