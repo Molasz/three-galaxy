@@ -6,7 +6,7 @@ import Camera from "./camera";
 import Renderer from "./renderer";
 import World from "./world";
 import Resources from "./utils/resources";
-import sources from "./sources";
+import { sources } from "./sources";
 import Debug from "./utils/debug";
 
 let instance;
@@ -27,7 +27,7 @@ export default class Main {
     this.scene = new THREE.Scene();
     this.camera = new Camera();
     this.renderer = new Renderer();
-    // this.resources = new Resources(sources);
+    this.resources = new Resources(sources);
     this.world = new World();
   }
 
@@ -60,7 +60,7 @@ export default class Main {
       }
     });
 
-    this.camera.controls.dispose();
+    if (this.camera.controls) this.camera.controls.dispose();
     this.renderer.instance.dispose();
 
     if (this.debug.active) this.debug.ui.destroy();

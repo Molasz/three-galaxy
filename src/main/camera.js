@@ -9,6 +9,7 @@ export default class Camera {
     this.setInstance();
     this.setOrbitControls();
   }
+  º;
 
   setInstance() {
     this.instance = new THREE.PerspectiveCamera(35, this.main.sizes.width / this.main.sizes.height, 0.1, 500);
@@ -27,6 +28,6 @@ export default class Camera {
   }
 
   update() {
-    this.controls.update();
+    if (this.controls) this.controls.update();
   }
 }
