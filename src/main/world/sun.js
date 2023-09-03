@@ -23,6 +23,7 @@ export default class Sun {
 
     if (this.main.debug.active) {
       const sun = this.main.debug.ui.addFolder("Sun");
+      sun.close();
 
       sun
         .add(debug, "size", 5, 30, 0.1)

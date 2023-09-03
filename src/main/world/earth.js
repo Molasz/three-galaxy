@@ -21,6 +21,7 @@ export default class Earth {
 
     if (this.main.debug.active) {
       const earth = this.main.debug.ui.addFolder("Earth");
+      earth.close();
       earth
         .add(debug, "size", 0, 5, 0.1)
         .name("Size")

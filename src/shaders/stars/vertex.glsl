@@ -1,9 +1,13 @@
 uniform float uPixelRatio;
 uniform float uSize;
 uniform float uTime;
-varying vec2 vUv;
+uniform float uSpeed;
 
+attribute float aSize;
 attribute float aRandom;
+attribute vec2 aColor;
+
+varying vec2 vColor;
 
 void main()
 {
@@ -12,10 +16,12 @@ void main()
     vec4 projectionPosition = projectionMatrix * viewPosition;
     gl_Position = projectionPosition;
 
-    gl_PointSize = uSize * uPixelRatio * tan(aRandom) * 25.0;
-    gl_PointSize *= sin(uTime * aRandom * 0.0005);
-    gl_PointSize = max(gl_PointSize, 1000.0);
+    gl_PointSize = uSize * aSize * uPixelRatio;
+    
+    float sizeAugment = abs(sin(uTime * uSpeed * 0.00001 * aRandom)) + 1.0;
+    gl_PointSize *= sizeAugment;
+    
     gl_PointSize *= (1.0 / -viewPosition.z);
 
-    vUv = uv;
+    vColor = aColor;
 }
