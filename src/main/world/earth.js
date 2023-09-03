@@ -19,21 +19,7 @@ export default class Earth {
     this.setMaterial();
     this.setMesh();
 
-    if (this.main.debug.active) {
-      const earth = this.main.debug.ui.addFolder("Earth");
-      earth.close();
-      earth
-        .add(debug, "size", 0, 5, 0.1)
-        .name("Size")
-        .onFinishChange(() => {
-          this.destroy();
-          this.setGeometry();
-          this.setMesh();
-        });
-      earth.add(debug, "position", 0, 50, 0.1).name("Position");
-      earth.add(debug, "elapse", 0, 10, 0.1).name("Elapse");
-      earth.add(debug, "rotation", 0, 10, 0.1).name("Rotation");
-    }
+    if (this.main.debug.active) this.setDebugger();
   }
 
   setGeometry() {
@@ -56,9 +42,21 @@ export default class Earth {
     this.mesh.rotation.y = this.main.time.elapse * debug.rotation * 0.0005;
   }
 
-  destroy() {
-    this.main.scene.remove(this.mesh);
-    this.mesh.geometry.dispose();
-    this.mesh.material.dispose();
+  setDebugger() {
+    const earth = this.main.debug.ui.addFolder("Earth");
+    earth.close();
+    earth
+      .add(debug, "size", 0, 5, 0.1)
+      .name("Size")
+      .onFinishChange(() => {
+        this.main.scene.remove(this.mesh);
+        this.mesh.geometry.dispose();
+        this.mesh.material.dispose();
+        this.setGeometry();
+        this.setMesh();
+      });
+    earth.add(debug, "position", 0, 50, 0.1).name("Position");
+    earth.add(debug, "elapse", 0, 10, 0.1).name("Elapse");
+    earth.add(debug, "rotation", 0, 10, 0.1).name("Rotation");
   }
 }

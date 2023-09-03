@@ -97,6 +97,18 @@ export default class Stars {
       });
 
     stars
+      .add(debug, "radius", 100, 500, 1)
+      .name("Radius")
+      .onFinishChange(() => {
+        this.main.scene.remove(this.mesh);
+        this.mesh.geometry.dispose();
+        this.mesh.material.dispose();
+
+        this.setGeometry();
+        this.setMesh();
+      });
+
+    stars
       .add(debug, "minSize", 1, 1000, 1)
       .name("Min  Size")
       .onFinishChange(() => {
@@ -111,18 +123,6 @@ export default class Stars {
     stars
       .add(debug, "maxSize", 1, 1000, 1)
       .name("Max Size")
-      .onFinishChange(() => {
-        this.main.scene.remove(this.mesh);
-        this.mesh.geometry.dispose();
-        this.mesh.material.dispose();
-
-        this.setGeometry();
-        this.setMesh();
-      });
-
-    stars
-      .add(debug, "radius", 100, 500, 1)
-      .name("Radius")
       .onFinishChange(() => {
         this.main.scene.remove(this.mesh);
         this.mesh.geometry.dispose();
