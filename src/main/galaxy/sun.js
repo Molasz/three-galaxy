@@ -65,5 +65,6 @@ export default class Sun {
 
     sun.add(debug, "rotation", 0, 10, 0.1).name("Rotation");
     sun.addColor(this.material.uniforms.uLightColor, "value").name("Light Color");
+    sun.addColor(this.material.uniforms.uDarkColor, "value").name("Dark Color");
   }
 }
