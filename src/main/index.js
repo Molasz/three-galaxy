@@ -4,7 +4,7 @@ import Sizes from "./utils/sizes";
 import Time from "./utils/time";
 import Camera from "./camera";
 import Renderer from "./renderer";
-import World from "./world";
+import Galaxy from "./galaxy";
 import Resources from "./utils/resources";
 import { sources } from "./sources";
 import Debug from "./utils/debug";
@@ -28,7 +28,7 @@ export default class Main {
     this.camera = new Camera();
     this.renderer = new Renderer();
     this.resources = new Resources(sources);
-    this.world = new World();
+    this.galaxy = new Galaxy();
   }
 
   resize() {
@@ -39,7 +39,7 @@ export default class Main {
   update() {
     if (this.debug.active) this.debug.stats.begin();
     this.camera.update();
-    this.world.update();
+    this.galaxy.update();
     this.renderer.update();
     if (this.debug.active) this.debug.stats.end();
   }
