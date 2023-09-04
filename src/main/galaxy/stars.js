@@ -57,6 +57,7 @@ export default class Stars {
 
   setMaterial() {
     this.material = new THREE.ShaderMaterial({
+      precision: "lowp",
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uTime: { value: 0 },
