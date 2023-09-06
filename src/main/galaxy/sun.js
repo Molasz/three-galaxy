@@ -23,13 +23,14 @@ export default class Sun {
   }
 
   setGeometry() {
-    this.geometry = new THREE.SphereGeometry(debug.size);
+    this.geometry = new THREE.SphereGeometry(debug.size, 512, 256);
   }
 
   setMaterial() {
     this.material = new THREE.ShaderMaterial({
       precision: "lowp",
       uniforms: {
+        uTime: { value: 0 },
         uTexture: { value: this.main.resources.items["sunTexture"] },
         uDarkColor: { value: new THREE.Color(debug.darkColor) },
         uLightColor: { value: new THREE.Color(debug.lightColor) },
@@ -45,6 +46,7 @@ export default class Sun {
   }
 
   update() {
+    this.material.uniforms.uTime.value = this.main.time.elapse;
     this.mesh.rotation.y = this.main.time.elapse * 0.0005 * debug.rotation;
   }
 

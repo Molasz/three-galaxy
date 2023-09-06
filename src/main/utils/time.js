@@ -13,7 +13,6 @@ export default class Time extends EventEmitter {
 
   tick() {
     const currentTime = Date.now();
-    const deltaTime = currentTime - this.current;
     this.current = currentTime;
 
     this.elapse = this.current - this.start;
