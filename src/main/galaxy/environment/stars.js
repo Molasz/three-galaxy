@@ -1,27 +1,25 @@
 import * as THREE from "three";
-import Main from "..";
+import Main from "../..";
 
-import vertexShader from "../../shaders/stars/vertex.glsl";
-import fragmentShader from "../../shaders/stars/fragment.glsl";
+import vertexShader from "../../../shaders/stars/vertex.glsl";
+import fragmentShader from "../../../shaders/stars/fragment.glsl";
 
 const debug = {
-  count: 500,
-  radius: 400,
-  size: 50,
-  minSize: 150,
-  maxSize: 600,
+  count: 250,
+  maxSize: 100,
   speedSize: 20,
 };
 
 export default class Stars {
-  constructor() {
+  constructor(envDebug) {
     this.main = new Main();
+    this.envDebug = envDebug;
 
     this.setGeometry();
     this.setMaterial();
     this.setMesh();
 
-    if (this.main.debug.active) this.setDebugger();
+    if (this.envDebug) this.setDebugger();
   }
 
   setGeometry() {
@@ -34,9 +32,11 @@ export default class Stars {
     const sizes = new Float32Array(starsCount);
     const randoms = new Float32Array(starsCount);
 
+    const radius = this.envDebug.children.find((child) => child.property === "radius").object.radius;
+
     for (let i = 0; i < starsCount; i++) {
       const position = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
-      position.setLength(debug.radius);
+      position.setLength(radius);
 
       positions[i * 3] = position.x;
       positions[i * 3 + 1] = position.y;
@@ -45,7 +45,7 @@ export default class Stars {
       colors[i * 3] = Math.random();
       colors[i * 3 + 1] = Math.random();
 
-      sizes[i] = debug.minSize + Math.random() * debug.maxSize;
+      sizes[i] = 500 + Math.random() * debug.maxSize * 100;
       randoms[i] = Math.random() + 1;
     }
 
@@ -61,7 +61,6 @@ export default class Stars {
       uniforms: {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uTime: { value: 0 },
-        uSize: { value: debug.size },
         uSpeed: { value: debug.speedSize },
       },
       vertexShader,
@@ -82,7 +81,7 @@ export default class Stars {
   }
 
   setDebugger() {
-    const stars = this.main.debug.ui.addFolder("Stars");
+    const stars = this.envDebug.addFolder("Stars");
     stars.close();
 
     stars
@@ -98,31 +97,7 @@ export default class Stars {
       });
 
     stars
-      .add(debug, "radius", 100, 500, 1)
-      .name("Radius")
-      .onFinishChange(() => {
-        this.main.scene.remove(this.mesh);
-        this.mesh.geometry.dispose();
-        this.mesh.material.dispose();
-
-        this.setGeometry();
-        this.setMesh();
-      });
-
-    stars
-      .add(debug, "minSize", 1, 1000, 1)
-      .name("Min  Size")
-      .onFinishChange(() => {
-        this.main.scene.remove(this.mesh);
-        this.mesh.geometry.dispose();
-        this.mesh.material.dispose();
-
-        this.setGeometry();
-        this.setMesh();
-      });
-
-    stars
-      .add(debug, "maxSize", 1, 1000, 1)
+      .add(debug, "maxSize", 1, 100, 1)
       .name("Max Size")
       .onFinishChange(() => {
         this.main.scene.remove(this.mesh);
@@ -133,7 +108,6 @@ export default class Stars {
         this.setMesh();
       });
 
-    stars.add(this.material.uniforms.uSize, "value", 1, 100, 1).name("Size");
     stars.add(this.material.uniforms.uSpeed, "value", 1, 100, 1).name("Speed");
   }
 }
