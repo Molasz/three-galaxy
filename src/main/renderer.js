@@ -12,6 +12,7 @@ export default class Renderer {
     this.instance = new THREE.WebGLRenderer({
       canvas: this.main.canvas,
       antialias: true,
+      powerPreference: "high-performance",
     });
 
     this.instance.useLegacyLights = false;
