@@ -6,9 +6,13 @@ import fragmentShader from "../../shaders/sun/fragment.glsl";
 
 const debug = {
   size: 10,
-  rotation: 2,
-  darkColor: "#fc8403",
-  lightColor: "#ed0000",
+  rotation: 0.2,
+  speed: 2,
+  amplifier: 0.3,
+  elevation: 0.7,
+  colorGap: 0.5,
+  innerColor: "#f5d400",
+  outerColor: "#ed5502",
 };
 
 export default class Sun {
@@ -23,7 +27,7 @@ export default class Sun {
   }
 
   setGeometry() {
-    this.geometry = new THREE.SphereGeometry(debug.size, 512, 256);
+    this.geometry = new THREE.SphereGeometry(debug.size, 1024, 1024);
   }
 
   setMaterial() {
@@ -31,10 +35,14 @@ export default class Sun {
       precision: "lowp",
       uniforms: {
         uTime: { value: 0 },
-        uTexture: { value: this.main.resources.items["sunTexture"] },
-        uDarkColor: { value: new THREE.Color(debug.darkColor) },
-        uLightColor: { value: new THREE.Color(debug.lightColor) },
+        uInnerColor: { value: new THREE.Color(debug.innerColor) },
+        uOuterColor: { value: new THREE.Color(debug.outerColor) },
+        uSpeed: { value: debug.speed },
+        uAmplifier: { value: debug.amplifier },
+        uElevation: { value: debug.elevation },
+        uColorGap: { value: debug.colorGap },
       },
+      defines: {},
       vertexShader,
       fragmentShader,
     });
@@ -47,12 +55,12 @@ export default class Sun {
 
   update() {
     this.material.uniforms.uTime.value = this.main.time.elapse;
-    this.mesh.rotation.y = this.main.time.elapse * 0.0005 * debug.rotation;
+    this.mesh.rotation.y = (this.main.time.elapse * debug.rotation) / 1000.0;
   }
 
   setDebugger() {
     const sun = this.main.debug.ui.addFolder("Sun");
-    sun.close();
+    // sun.close();
 
     sun
       .add(debug, "size", 5, 30, 0.1)
@@ -66,7 +74,11 @@ export default class Sun {
       });
 
     sun.add(debug, "rotation", 0, 10, 0.1).name("Rotation");
-    sun.addColor(this.material.uniforms.uLightColor, "value").name("Light Color");
-    sun.addColor(this.material.uniforms.uDarkColor, "value").name("Dark Color");
+    sun.add(this.material.uniforms.uSpeed, "value", 1, 5, 0.1).name("Speed");
+    sun.add(this.material.uniforms.uAmplifier, "value", 0, 1, 0.01).name("Amplifier");
+    sun.add(this.material.uniforms.uElevation, "value", 0, 2, 0.1).name("Elevation");
+    sun.add(this.material.uniforms.uColorGap, "value", 0, 1, 0.01).name("Color Gap");
+    sun.addColor(this.material.uniforms.uInnerColor, "value").name("Inner Color");
+    sun.addColor(this.material.uniforms.uOuterColor, "value").name("Outer Color");
   }
 }

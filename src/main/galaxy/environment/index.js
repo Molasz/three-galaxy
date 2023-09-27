@@ -20,8 +20,10 @@ export default class Environment {
   }
 
   setDebugger() {
-    this.envDebug = this.main.debug.ui.addFolder("Environment");
-    this.envDebug
+    const envDebug = this.main.debug.ui.addFolder("Environment");
+    envDebug.close();
+
+    envDebug
       .add(debug, "radius", 100, 500, 1)
       .name("Radius")
       .onFinishChange(() => {
@@ -39,5 +41,7 @@ export default class Environment {
         this.starsS.setGeometry();
         this.starsS.setMesh();
       });
+
+    this.envDebug = envDebug;
   }
 }
