@@ -13,9 +13,4 @@ export const sources = [
     type: sourceTypes.texture,
     path: "textures/starS.png",
   },
-  {
-    name: "sunTexture",
-    type: sourceTypes.texture,
-    path: "textures/sun.png",
-  },
 ];
